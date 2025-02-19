@@ -6,11 +6,36 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>hi</h1>
+    <h1>Data Fetch Example</h1>
+    <div id="output"></div>
     <script>
-        fetch('/api/data')
-        .then(response => response.json())
-        .then(data => console.log(data));
+const output = document.getElementById('output');
+// Fetch the API
+fetch('/api/data') // Replace with your API URL
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json(); // Parse the response as JSON
+  })
+  .then(data => {
+    if (Array.isArray(data)) {
+      // Iterate through the array
+      data.forEach(obj => {
+        console.log(obj);
+        const h2 = document.createElement('h2');
+        h2.innerText = obj.title;
+        output.appendChild(h2);
+      });
+    } else {
+      console.error('The API response is not an array.');
+    }
+  })
+  .catch(error => {
+    console.error('There was an error fetching the data:', error);
+  });
+
+
     </script>
 </body>
 </html>
